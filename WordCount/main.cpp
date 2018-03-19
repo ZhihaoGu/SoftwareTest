@@ -16,65 +16,37 @@ using namespace std;
 
 int main(int argc, const char * argv[]) {
     // insert code here...
-    //std::cout << "姹夊瓧娴嬭瘯\n";
-    int flag0=0,flag1=0,flag2=0,flag3=0;    //arg获得输入 
+    //std::cout << "hello world\n";
+    int flag0=0,flag1=0,flag2=0,flag3=0,flag4=0;    //arg获得输入 
     
     string input="test.txt";
     string output="reslt.txt";              //默认文件 
     
     if(argc>1){
-    	input=argv[1];
-    	
+    	input=argv[1];						//获取输入文件名    	
 	}
    
-    
     for(int p=2;p<argc;p++){
     	string arg(argv[p]);
     	flag0 = flag0||arg=="-c";
     	flag1 = flag1||arg=="-w";
     	flag2 = flag2||arg=="-l";
+    	flag3 = flag3||arg=="-a"; 
 	}
 	
     if(argc>1){
     	string arg(argv[argc-2]);
     	if(arg=="-o"){
-    		//std::cout<<6;
-    		output=argv[argc-1];
+    		output=argv[argc-1];			//获取输出 
 		}
 	}
-    
-    
-//    for (int p=1; p<argc; p++) {            //妫�娴媝arameter
-//        if (strcmp(argv[p],"-c")) {
-//            flag0=1;
-//            std::cout<<flag0<<flag1<<flag2<<"\n";
-//        }else{
-//            if (strcmp(argv[p],"-w")) {
-//                flag1=2;
-//                std::cout<<flag0<<flag1<<flag2<<"\n";
-//            }else{
-//                if (strcmp(argv[p],"-l")) {
-//                    flag2=3;
-//                    std::cout<<flag0<<flag1<<flag2<<"\n";
-//                }else{
-//                    //input=argv[p];
-//                }
-//            }
-//        }
-//        if (strcmp(argv[p],"-o")) {
-//            flag3=1;
-//            p++;
-//            //output=argv[p];
-//        }
-//    }
-    
+
     char* charinput = new char[input.length()+1];
     strcpy(charinput,input.c_str());
     FILE* fp;
     int line=0;
     int word=0;
     fp = fopen(charinput,"r");              //读取文件 
-    
     if (fp == NULL) {
         cout<<"Fail to read file"<<endl;
         return 0;
@@ -88,10 +60,10 @@ int main(int argc, const char * argv[]) {
         if (i=='\n') {
             line++;                        //统计行数 
         }
-        charnum++;                          //统计字符 
+        charnum++;                         //统计字符 
     } while (i!=EOF&&i!=feof(fp));
 
-    rewind(fp);
+    rewind(fp);								//返回文件头部 
 
     word=0;
     int j=0;
@@ -107,15 +79,61 @@ int main(int argc, const char * argv[]) {
             }
         }
     }
-    //std::cout<<flag0<<flag1<<flag2<<"\n";
-    std::cout<<"行数:"<<line<<"\n词数:"<<word<<"\n字符数："<<charnum<<std::endl;
+
+    rewind(fp);
+    
+    int unusedline=0;
+    int unusedflag=0;
+    do{	
+        i=fgetc(fp);						//统计空行，若相邻两字符除空格外均为换行则有一空行 
+        if(i!=' '){
+        	if (i=='\n') {
+        		if(unusedflag==1){
+					unusedline++;
+				}
+	        	if(unusedflag==0){
+	        		unusedflag=1;  
+				}				
+        	}else{
+        	unusedflag=0;
+			}
+		}        
+    } while (i!=EOF&&i!=feof(fp));
+    
+    rewind(fp); 
+    
+    int noteline=0;
+    int noteflag1=0;
+    int noteflag2=0;
+    do{	
+        i=fgetc(fp);
+        if(i=='/'&&noteflag2==0){			//统计注释行 
+        	if(noteflag1==1){
+        		noteline++;
+        		noteflag2=1;
+			}
+			if(noteflag1==0){
+				noteflag1=1;
+			}
+		}
+		
+		if(i='\n'){
+			noteflag1=0;
+			noteflag2=0;
+		}
+		        
+    } while (i!=EOF&&i!=feof(fp));
+    
+    int codeline=0;
+    codeline=(line-noteline)-unusedline;			//代码行为行数减去注释和空行 
+      
+    //std::cout<<"行数:"<<line<<"\n词数:"<<word<<"\n字符数："<<charnum<<std::endl;
     
     ofstream fout;                          //输出到文件 
     fout.open(output.c_str());
     
-    //flag0=flag1=flag2=1;
-    
-    if (flag0==1) {
+
+    if (flag0==1) {							//按要求写入文件 
         fout<<input;
         fout<<"字符数："<<charnum<<"\n";
     }
@@ -129,14 +147,17 @@ int main(int argc, const char * argv[]) {
         fout<<input;
         fout<<"行数:"<<line<<"\n";
     }
-    
+    if (flag3==1){
+    	fout<<input<<"代码行："<< codeline<<"\n";
+    	fout<<input<<"注释行："<< noteline<<"\n";
+    	fout<<input<<"空  行："<< unusedline<<"\n";
+	}
     //fout<<"行数:"<<line<<"\n词数:"<<word<<"\n字符数"<<charnum<<"\n";
     //fout<<flush;
-    fout<<"ceshi\n";
-    fout.close();
-    
+    fout.close();    
     return 0;
 }
+
 
 
 
