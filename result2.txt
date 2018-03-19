@@ -1,0 +1,4 @@
+test2.txt字符数：17
+test2.txt词数:6
+test2.txt行数:5
+ceshi
