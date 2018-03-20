@@ -20,14 +20,12 @@ int main(int argc, const char * argv[]) {
     // insert code here...
     //std::cout << "hello world\n";
     int flag0=0,flag1=0,flag2=0,flag3=0,flag4=0;    //arg获得输入 
-    
     string input="test.txt";
     string output="result.txt";              //默认文件 
     string stoplistname;
     if(argc>1){
     	input=argv[1];						//获取输入文件名 规定第一个参数必为输入文件名   	
-	}
-   
+	}   
    	for(int a=2;a<argc;a++){
    		string arg(argv[a]);
    		if(arg=="-c"){
@@ -51,22 +49,6 @@ int main(int argc, const char * argv[]) {
 		   }
 	   }   
    
-//    for(int p=2;p<argc;p++){
-//    	string arg(argv[p]);
-//    	flag0 = flag0||arg=="-c";
-//    	flag1 = flag1||arg=="-w";
-//    	flag2 = flag2||arg=="-l";
-//    	flag3 = flag3||arg=="-a"; 
-//	}
-//	
-//    if(argc>1){
-//    	string arg(argv[argc-2]);
-//    	if(arg=="-o"){
-//    		output=argv[argc-1];			//获取输出 
-//		}
-//	}
-//    char* charinput = new char[input.length()+1];
-//    strcpy(charinput,input.c_str());
     FILE* fp;
     int line=0;
     int word=0;
@@ -192,7 +174,7 @@ int stoplist(string input) {
 			stopword[sum][n] = '\0';
 			sum++;
 			n = 0;
-	}
+		}
 		currentchar = stopfile.get();
 	}
 	currentchar = inputfile.get();
