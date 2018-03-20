@@ -1,0 +1,7 @@
+test.txt字符数：15
+test.txt词数:5
+test.txt行数:5
+test.txt代码行：3
+test.txt注释行：1
+test.txt空  行：1
+test.txt除去停用词外词数：3

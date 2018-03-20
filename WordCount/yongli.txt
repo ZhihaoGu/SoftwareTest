@@ -1,0 +1,10 @@
+wc.exe test.txt
+wc.exe test.txt -c
+wc.exe test.txt -w
+wc.exe test.txt -l
+wc.exe test.txt -o reult.txt
+wc.exe test.txt -a
+wc.exe test.txt -e stoplist.txt
+wc.exe test.txt -c -w -l
+wc.exe test.txt -a -o result.txt
+wc.exe test.txt -a -l -w -c -e stoplist -o testall.txt
